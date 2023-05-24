@@ -1,0 +1,20 @@
+.pop-up__close_place_delete-card {
+    top: 30px;
+    right: -30px;
+}
+
+@media (max-width: 560px) {
+    .pop-up__close_place_delete-card {
+        top: 40px;
+        right: 40px;
+    }
+}
+
+@media (max-width: 375px) {
+    .pop-up__close_place_delete-card {
+        width: 20px;
+        height: 20px;
+        top: 50px;
+        right: 10px;
+    }
+}

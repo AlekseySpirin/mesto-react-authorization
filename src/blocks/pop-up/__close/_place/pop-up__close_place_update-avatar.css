@@ -1,0 +1,19 @@
+.pop-up__close_place_update-avatar {
+    top: -5px;
+}
+
+@media (max-width: 560px) {
+    .pop-up__close_place_update-avatar {
+        top: 0;
+        right: 40px;
+    }
+}
+
+@media (max-width: 375px) {
+    .pop-up__close_place_update-avatar {
+        width: 20px;
+        height: 20px;
+        top: 25px;
+        right: 0;
+    }
+}

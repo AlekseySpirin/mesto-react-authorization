@@ -1,0 +1,6 @@
+.pop-up__container {
+    display: flex;
+    position: relative;
+    width: 430px;
+    height: 330px;
+}

@@ -1,0 +1,33 @@
+.profile__desc {
+    text-align: start;
+
+    position: relative;
+
+    display: grid;
+    grid-template-columns: fit-content(450px);
+    grid-template-rows: 50px 30px;
+    grid-column-gap: 18px;
+    grid-row-gap: 7px;
+    grid-area: desc;
+    grid-template-areas:
+    'name edit-btn'
+    'info info';
+}
+
+@media (max-width: 768px) {
+    .profile__desc {
+        grid-row-gap: 0;
+        justify-self: center;
+        text-align: center;
+        grid-template-columns: 1fr 30px;
+        grid-template-rows: 42px 27px;
+        grid-column-gap: 0;
+        /* grid-template-rows: repeat(2, 1fr); */
+    }
+}
+
+@media (max-width: 320px) {
+    .profile__desc {
+        max-width: 282px;
+    }
+}
