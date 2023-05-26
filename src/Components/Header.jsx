@@ -1,6 +1,6 @@
 import logo320 from "../images/svg/logo320.svg";
 import logo from "../images/svg/logo.svg";
-
+import './styles/Header.css'
 function Header() {
 	
 	return (

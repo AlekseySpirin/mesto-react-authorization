@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from "./Header";
+import './styles/Login.css'
 import {Link, useNavigate} from 'react-router-dom';
 const Login = () => {
 	return (
@@ -19,10 +19,6 @@ const Login = () => {
 					<button type="submit" className="login__link">Войти</button>
 				</div>
 			</form>
-			<div className="login__signup">
-				<p>Ещё не зарегистрированы?</p>
-				<Link to="/register" className="signup__link">Зарегистрироваться</Link>
-			</div>
 		</div>
 	);
 };

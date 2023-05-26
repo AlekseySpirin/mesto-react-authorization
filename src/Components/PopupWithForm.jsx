@@ -1,5 +1,5 @@
 import Loading from "./Loading";
-
+import './styles/PopupWithForm.css'
 function PopupWithForm({
 	                       title,
 	                       name,

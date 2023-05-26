@@ -1,6 +1,6 @@
 import React from 'react';
 import PopupWithForm from "./PopupWithForm";
-
+import './styles/PopupWithConfirm.css'
 const PopupWithConfirm = ({isOpen, onClose, onSubmit, isLoading}) => {
 	
 	function handleSubmit(e) {

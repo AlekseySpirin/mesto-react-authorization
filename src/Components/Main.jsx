@@ -1,5 +1,5 @@
 import {useContext} from "react";
-
+import './styles/Main.css'
 import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
