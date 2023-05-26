@@ -10,6 +10,8 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import PopupWithConfirm from "./PopupWithConfirm";
+import FormValidator from "./FormValidator";
+import Loading from "./Loading";
 
 const App = () => {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -24,10 +26,23 @@ const App = () => {
 	});
 	const [cards, setCards] = useState([]);
 	const [cardToDelete, setCardToDelete] = useState({});
+	const [isLoading, setIsLoading] = useState(false);
 	
 	// POPUP //
+	
 	function handleEditAvatarClick() {
+		formValidators['update-avatar'].resetValidation();
+		formValidators['update-avatar'].disableSubmitButton();
 		setIsEditAvatarPopupOpen(true);
+		
+	}
+	
+	function loadingContent() {
+		setIsLoading(true);
+	}
+	
+	function loadedContent() {
+		setIsLoading(false);
 	}
 	
 	function handlePopupWithConfirmClick() {
@@ -35,10 +50,12 @@ const App = () => {
 	}
 	
 	function handleAddPlaceClick() {
+		formValidators['add-place'].resetValidation();
 		setIsAddPlacePopupOpen(true);
 	}
 	
 	function handleEditProfileClick() {
+		formValidators['edit-profile'].resetValidation();
 		setCurrentUser({
 			name: currentUser.name,
 			about: currentUser.about,
@@ -91,41 +108,91 @@ const App = () => {
 	}
 	
 	function handleCardDelete() {
+		loadingContent();
 		api.deleteCardServer(cardToDelete._id)
+			
 			.then(() => {
 				const updatedCards = cards.filter((c) => c._id !== cardToDelete._id);
 				setCards(updatedCards);
 				setIsPopupWithConfirmOpen(false);
 				setCardToDelete(null);
 			})
-			.catch(err => console.log(err));
+			.catch(err => console.log(err))
+			.finally(() => {loadedContent();});
 	}
 	
+	// После сабмита формы, при повторном открытии окна кнопка сабмита снова
+	// активна, не применяется  formValidators['name'].disableSubmitButton();
+	// точнее кнопка становится неактивной и сразу активной.
+	// Класс дизейбла кнопки включается и сразу отключается.
+	// При закрытии на крестик, все отрабатывает нормально.
+	
 	function handleUpdateUser({name, about}) {
+		formValidators['edit-profile'].disableSubmitButton();
+		loadingContent();
 		api.editServerProfile({name, about}).then((userInfo) => {
 			setCurrentUser(userInfo);
 			closeAllPopups();
-		}).catch(err => console.log(err));
+		}).catch((err) => {
+			formValidators['edit-profile'].enableSubmitButton();
+			console.log(err);
+		}).finally(() => {loadedContent();});
 	}
 	
 	function handleUpdateAvatar({avatar}) {
+		formValidators['update-avatar'].disableSubmitButton();
+		loadingContent();
 		api.editAvatar({avatar}).then((userAvatar) => {
 			setCurrentUser(userAvatar);
+			
 			closeAllPopups();
-		}).catch(err => console.log(err));
+		}).catch((err) => {
+			formValidators['update-avatar'].enableSubmitButton();
+			console.log(err);
+		}).finally(() => {loadedContent();});
 	}
 	
 	function handleAddPlace({name, link}) {
+		formValidators['add-place'].disableSubmitButton();
+		loadingContent();
 		api.addCardServer({name, link}).then((newCard) => {
 			setCards([newCard, ...cards]);
 			closeAllPopups();
-		}).catch(err => console.log(err));
+		}).catch((err) => {
+			formValidators['add-place'].enableSubmitButton();
+			console.log(err);
+		}).finally(() => {loadedContent();});
 	}
+	
+	// VALIDATION //
+	
+	const formValidators = {};
+	
+	const enableValidation = (config) => {
+		const formList = Array.from(document.querySelectorAll(config.formSelector));
+		formList.forEach((formElement) => {
+			const validator = new FormValidator(config, formElement);
+			const formName = formElement.getAttribute('name');
+			
+			formValidators[formName] = validator;
+			validator.enableValidation();
+		});
+	};
+	
+	enableValidation({
+		formSelector: '.form',
+		inputSelector: '.form__item',
+		submitButtonSelector: '.pop-up__button',
+		inactiveButtonClass: 'pop-up__button_disabled',
+		inputErrorClass: 'form__item_invalid',
+		errorClass: 'form__item-error',
+	});
 	
 	return (
 		
 		<CurrentUserContext.Provider value={currentUser}>
 			<Header/>
+			<Loading/>
 			<Main
 				cards={cards}
 				onCardLike={handleCardLike}
@@ -134,20 +201,23 @@ const App = () => {
 				onAddPlace={handleAddPlaceClick}
 				onEditAvatar={handleEditAvatarClick}
 				onCardDelete={cardDeleteClick}
-				// onConfirm={cardDeleteClick}
 			/>
 			<Footer/>
 			<EditProfilePopup onUpdateUser={handleUpdateUser}
 			                  isOpen={isEditProfilePopupOpen}
-			                  onClose={closeAllPopups}/>
+			                  onClose={closeAllPopups}
+			                  isLoading={isLoading}/>
 			<AddPlacePopup isOpen={isAddPlacePopupOpen}
 			               onClose={closeAllPopups}
-			               onAddPlace={handleAddPlace}/>
+			               onAddPlace={handleAddPlace}
+			               isLoading={isLoading}/>
 			<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}
-			                 onUpdateAvatar={handleUpdateAvatar}/>
+			                 onUpdateAvatar={handleUpdateAvatar}
+			                 isLoading={isLoading}/>
 			<PopupWithConfirm isOpen={isPopupWithConfirmOpen}
 			                  onSubmit={submitFormConfirmDelete}
-			                  onClose={closeAllPopups}/>
+			                  onClose={closeAllPopups}
+			                  isLoading={isLoading}/>
 			<ImagePopup
 				selectedCard={selectedCard}
 				onClose={closeAllPopups}/>

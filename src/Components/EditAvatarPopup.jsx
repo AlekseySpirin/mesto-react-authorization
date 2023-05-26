@@ -1,7 +1,8 @@
 import {useEffect, useRef} from 'react';
 import PopupWithForm from "./PopupWithForm";
 
-const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar}) => {
+
+const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar, isLoading}) => {
 	
 	const avatarRef = useRef(null);
 	
@@ -15,7 +16,7 @@ const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar}) => {
 		if (isOpen) {
 			avatarRef.current.value = '';
 		}
-		
+
 	}, [isOpen]);
 	
 	return (
@@ -25,6 +26,7 @@ const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar}) => {
 			isOpen={isOpen}
 			onClose={onClose}
 			onSubmit={handleSubmit}
+			isLoading={isLoading}
 		>
 			<input
 				id="link-avatar"
