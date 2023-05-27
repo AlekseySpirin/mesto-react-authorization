@@ -1,0 +1,47 @@
+.not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.not-found__error {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 50px;
+    line-height: 85px;
+    /* identical to box height */
+
+
+
+    color: #FFFFFF;
+}
+
+.not-found__text {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 25px;
+
+    color: #FFFFFF;
+}
+
+.not-found__link {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 17px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #fff;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: ease 0.3s;
+}
+
+.not-found__link:hover {
+    opacity: 0.6;
+}

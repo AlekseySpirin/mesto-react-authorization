@@ -77,7 +77,15 @@
 
 }
 
+.register_error {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 25px;
 
+    color: #FFFFFF;
+}
 
 .register__link {
     text-align: center;

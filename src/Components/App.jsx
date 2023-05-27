@@ -15,8 +15,20 @@ import './styles/App.css';
 import Login from "./Login";
 import Register from "./Register";
 import Result from "./Result";
+import {
+	
+	Route,
+	Routes,
+	Navigate,
+	
+} from 'react-router-dom';
+import ProtectedRouteElement from "./ProtectedRoute";
+import NotFound from "./NotFound";
 
 const App = () => {
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	
+	
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -31,7 +43,7 @@ const App = () => {
 	const [cardToDelete, setCardToDelete] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-	const [isSucces, setIsSucces] = useState(false);
+	// const [isSucces, setIsSucces] = useState(false);
 	const [isResultsOpen, setIsResultsOpen] = useState(false);
 	
 	// POPUP //
@@ -43,13 +55,17 @@ const App = () => {
 		
 	}
 	
-	function showResults(){
-		setIsResultsOpen(true)
-	}
+	// function showResults(){
+	// 	setIsResultsOpen(true)
+	// }
+	//
+	// function successResult() {
+	// 	setIsSucces(true);
+	// }
 	
-	function successResult() {
-		setIsSucces(true);
-	}
+	const handleLogin = () => {
+		setIsLoggedIn(true);
+	};
 	
 	function disableSubmitBtn() {
 		setIsButtonDisabled(true);
@@ -91,7 +107,7 @@ const App = () => {
 		setIsAddPlacePopupOpen(false);
 		setIsEditProfilePopupOpen(false);
 		setIsPopupWithConfirmOpen(false);
-		setIsResultsOpen(false)
+		setIsResultsOpen(false);
 		setSelectedCard(null);
 	}
 	
@@ -217,20 +233,28 @@ const App = () => {
 			<Header/>
 			<Result
 				name={'result'}
-				isSucces={isSucces}
+				// isSucces={isSucces}
 				isOpen={isResultsOpen}
 				onClose={closeAllPopups}/>
-			<Register/>
-			<Login/>
-			<Main
-				cards={cards}
-				onCardLike={handleCardLike}
-				onCardClick={handleCardClick}
-				onEditProfile={handleEditProfileClick}
-				onAddPlace={handleAddPlaceClick}
-				onEditAvatar={handleEditAvatarClick}
-				onCardDelete={cardDeleteClick}
-			/>
+			<Routes>
+				<Route path="/"  element={isLoggedIn ? <Navigate to="/cards" replace/> :
+					<Navigate to="/login" replace/>}/>
+				<Route path="/register" element={<Register/>}/>
+				<Route path="/login" element={<Login handleLogin={handleLogin}/>}/>
+				<Route path="/cards"
+				       element={<ProtectedRouteElement
+					       element={Main}
+					       isLoggedIn={isLoggedIn}
+					       cards={cards}
+					       onCardLike={handleCardLike}
+					       onCardClick={handleCardClick}
+					       onEditProfile={handleEditProfileClick}
+					       onAddPlace={handleAddPlaceClick}
+					       onEditAvatar={handleEditAvatarClick}
+					       onCardDelete={cardDeleteClick}
+				       />}/>
+				<Route path="*" element={<NotFound />} />
+			</Routes>
 			<Footer/>
 			<EditProfilePopup onUpdateUser={handleUpdateUser}
 			                  isOpen={isEditProfilePopupOpen}

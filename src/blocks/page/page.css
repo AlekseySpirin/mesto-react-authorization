@@ -1,6 +1,7 @@
 .page {
     max-width: 1280px;
     margin: 0 auto;
+    height: 100vh;
     background: #000;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
