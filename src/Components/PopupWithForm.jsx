@@ -8,7 +8,8 @@ function PopupWithForm({
 	                       isOpen,
 	                       onClose,
 	                       onSubmit,
-	                       isLoading
+	                       isLoading,
+	                       isButtonDisabled
                        }) {
 	
 	return (
@@ -20,7 +21,7 @@ function PopupWithForm({
 					{children}
 					<button type="submit"
 					        className="pop-up__button"
-					        disabled
+					        disabled={isButtonDisabled}
 					>{isLoading ? <Loading/> : submitButtonText || 'Сохранить'}</button>
 				</form>
 				<button onClick={onClose} type="button"

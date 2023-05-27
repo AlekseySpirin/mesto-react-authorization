@@ -11,8 +11,11 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import PopupWithConfirm from "./PopupWithConfirm";
 import FormValidator from "../utils/FormValidator";
-import Loading from "./Loading";
-import './styles/App.css'
+import './styles/App.css';
+import Login from "./Login";
+import Register from "./Register";
+import Result from "./Result";
+
 const App = () => {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -27,6 +30,9 @@ const App = () => {
 	const [cards, setCards] = useState([]);
 	const [cardToDelete, setCardToDelete] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+	const [isSucces, setIsSucces] = useState(false);
+	const [isResultsOpen, setIsResultsOpen] = useState(false);
 	
 	// POPUP //
 	
@@ -35,6 +41,22 @@ const App = () => {
 		formValidators['update-avatar'].disableSubmitButton();
 		setIsEditAvatarPopupOpen(true);
 		
+	}
+	
+	function showResults(){
+		setIsResultsOpen(true)
+	}
+	
+	function successResult() {
+		setIsSucces(true);
+	}
+	
+	function disableSubmitBtn() {
+		setIsButtonDisabled(true);
+	}
+	
+	function enableSubmitBtn() {
+		setIsButtonDisabled(false);
 	}
 	
 	function loadingContent() {
@@ -69,6 +91,7 @@ const App = () => {
 		setIsAddPlacePopupOpen(false);
 		setIsEditProfilePopupOpen(false);
 		setIsPopupWithConfirmOpen(false);
+		setIsResultsOpen(false)
 		setSelectedCard(null);
 	}
 	
@@ -140,14 +163,14 @@ const App = () => {
 	}
 	
 	function handleUpdateAvatar({avatar}) {
-		formValidators['update-avatar'].disableSubmitButton();
+		disableSubmitBtn();
 		loadingContent();
 		api.editAvatar({avatar}).then((userAvatar) => {
 			setCurrentUser(userAvatar);
-			
 			closeAllPopups();
+			disableSubmitBtn();
 		}).catch((err) => {
-			formValidators['update-avatar'].enableSubmitButton();
+			enableSubmitBtn();
 			console.log(err);
 		}).finally(() => {loadedContent();});
 	}
@@ -192,7 +215,13 @@ const App = () => {
 		
 		<CurrentUserContext.Provider value={currentUser}>
 			<Header/>
-			<Loading/>
+			<Result
+				name={'result'}
+				isSucces={isSucces}
+				isOpen={isResultsOpen}
+				onClose={closeAllPopups}/>
+			<Register/>
+			<Login/>
 			<Main
 				cards={cards}
 				onCardLike={handleCardLike}
@@ -211,9 +240,11 @@ const App = () => {
 			               onClose={closeAllPopups}
 			               onAddPlace={handleAddPlace}
 			               isLoading={isLoading}/>
-			<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}
+			<EditAvatarPopup isOpen={isEditAvatarPopupOpen}
+			                 onClose={closeAllPopups}
 			                 onUpdateAvatar={handleUpdateAvatar}
-			                 isLoading={isLoading}/>
+			                 isLoading={isLoading}
+			                 isButtonDisabled={isButtonDisabled}/>
 			<PopupWithConfirm isOpen={isPopupWithConfirmOpen}
 			                  onSubmit={submitFormConfirmDelete}
 			                  onClose={closeAllPopups}

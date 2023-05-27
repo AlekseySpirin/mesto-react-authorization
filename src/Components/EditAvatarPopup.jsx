@@ -2,7 +2,7 @@ import {useEffect, useRef} from 'react';
 import PopupWithForm from "./PopupWithForm";
 import './styles/EditAvatarPopup.css'
 
-const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar, isLoading}) => {
+const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar, isLoading, isButtonDisabled}) => {
 	
 	const avatarRef = useRef(null);
 	
@@ -27,6 +27,7 @@ const EditAvatarPopup = ({isOpen, onClose, onUpdateAvatar, isLoading}) => {
 			onClose={onClose}
 			onSubmit={handleSubmit}
 			isLoading={isLoading}
+			isButtonDisabled={isButtonDisabled}
 		>
 			<input
 				id="link-avatar"

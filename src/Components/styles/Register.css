@@ -1,4 +1,4 @@
-.login {
+.register {
     margin: 0 auto;
     margin-top: 60px;
     max-width: 360px;
@@ -9,7 +9,7 @@
     flex-direction: column;
 }
 
-.login__welcome {
+.register__welcome {
     margin: 0;
     padding: 0;
 
@@ -25,7 +25,7 @@
     color: #FFFFFF;
 }
 
-.login__form {
+.register__form {
     margin-top: 20px;
     width: 100%;
     min-height: 400px;
@@ -43,7 +43,7 @@
 
 }
 
-.login__form input {
+.register__form input {
     border: none;
     border-bottom: 2px solid #CCCCCC;
     padding-bottom: 3px;
@@ -62,7 +62,7 @@
 }
 
 
-.login__button-container {
+.register__button-container {
     display: flex;
     margin-top: auto;
     justify-content: center;
@@ -79,7 +79,7 @@
 
 
 
-.login__link {
+.register__link {
     text-align: center;
     min-height: 50px;
     padding: 0;
@@ -89,7 +89,7 @@
     font-size: 16px;
 }
 
-.login__signin {
+.register__signin {
     width: 100%;
     display: flex;
     flex-direction: row;
