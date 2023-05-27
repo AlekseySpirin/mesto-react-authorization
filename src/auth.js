@@ -23,7 +23,7 @@ export const authorize = (email, password) => {
 	})
 		.then(res => res.ok? res.json() : Promise.reject(`Ошибка : ${res.status}`))
 };
-export const checkToken = (token) => {
+export const getContent = (token) => {
 	return fetch(`${BASE_URL}/users/me`, {
 		method: 'GET',
 		headers: {

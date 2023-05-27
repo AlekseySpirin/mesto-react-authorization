@@ -12,8 +12,6 @@ function Main({
 	              onCardDelete,
 	              cards,
 	              onConfirm,
-	              userData,
-	              isLoggedIn
               }) {
 	
 	const currentUser = useContext(CurrentUserContext);
