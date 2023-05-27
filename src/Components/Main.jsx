@@ -1,5 +1,5 @@
 import {useContext} from "react";
-import './styles/Main.css'
+import './styles/Main.css';
 import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
@@ -11,7 +11,9 @@ function Main({
 	              onCardLike,
 	              onCardDelete,
 	              cards,
-	              onConfirm
+	              onConfirm,
+	              userData,
+	              isLoggedIn
               }) {
 	
 	const currentUser = useContext(CurrentUserContext);

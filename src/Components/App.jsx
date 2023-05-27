@@ -19,15 +19,17 @@ import {
 	
 	Route,
 	Routes,
-	Navigate,
+	Navigate, useNavigate,
 	
 } from 'react-router-dom';
 import ProtectedRouteElement from "./ProtectedRoute";
 import NotFound from "./NotFound";
+import {authorize, register} from "../auth";
 
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	
+	const [userData, setUserData] = useState(null);
+	const navigate = useNavigate();
 	
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -63,8 +65,23 @@ const App = () => {
 	// 	setIsSucces(true);
 	// }
 	
-	const handleLogin = () => {
-		setIsLoggedIn(true);
+	const handleRegister = (password, email) => {
+		return register(password, email)
+			.then(() => {
+				
+				navigate('/login')
+			})
+			
+	};
+	
+	
+	const handleLogin = (email, password) => {
+		
+		return authorize(email, password).then((data) => {
+			setIsLoggedIn(true);
+			setUserData(data)
+			navigate('/cards')
+		})
 	};
 	
 	function disableSubmitBtn() {
@@ -230,7 +247,7 @@ const App = () => {
 	return (
 		
 		<CurrentUserContext.Provider value={currentUser}>
-			<Header/>
+			<Header isLoggedIn={isLoggedIn}/>
 			<Result
 				name={'result'}
 				// isSucces={isSucces}
@@ -239,15 +256,17 @@ const App = () => {
 			<Routes>
 				<Route path="/"  element={isLoggedIn ? <Navigate to="/cards" replace/> :
 					<Navigate to="/login" replace/>}/>
-				<Route path="/register" element={<Register/>}/>
+				<Route path="/register" element={<Register handleRegister={handleRegister}/>}/>
 				<Route path="/login" element={<Login handleLogin={handleLogin}/>}/>
 				<Route path="/cards"
 				       element={<ProtectedRouteElement
 					       element={Main}
 					       isLoggedIn={isLoggedIn}
+					       userData={userData}
 					       cards={cards}
 					       onCardLike={handleCardLike}
 					       onCardClick={handleCardClick}
+					       
 					       onEditProfile={handleEditProfileClick}
 					       onAddPlace={handleAddPlaceClick}
 					       onEditAvatar={handleEditAvatarClick}

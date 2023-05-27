@@ -3,7 +3,7 @@ import logo from "../images/svg/logo.svg";
 import {NavLink} from 'react-router-dom';
 import './styles/Header.css';
 
-function Header() {
+function Header({isLoggedIn}) {
 	
 	return (
 		<header className="header">
@@ -17,6 +17,7 @@ function Header() {
 				<NavLink to="/register"
 				         className={({isActive}) => `menu__item ${isActive ? "menu__item_active" : ""}`}>Регистрация</NavLink>
 			</nav>
+			isLoggedIn?.<p className={'user__email'}>email</p>
 		</header>
 	);
 }

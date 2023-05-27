@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import './styles/Register.css';
-import {useNavigate} from "react-router-dom";
-import {register} from "../auth";
 
-const Register = () => {
+
+const Register = ({handleRegister}) => {
 	
 	const [formValue, setFormValue] = useState({
 		email: '',
@@ -12,7 +11,7 @@ const Register = () => {
 	
 	const [errorMessage, setErrorMessage] = useState('');
 	
-	const navigate = useNavigate();
+
 	
 	const handleChange = (e) => {
 		const {name, value} = e.target;
@@ -25,17 +24,12 @@ const Register = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const {email, password} = formValue;
-		register(password, email)
-			.then((data) => {
-				console.log(data)
-				navigate('/login')
-			})
-			.catch(err => setErrorMessage(err))
+		handleRegister(email, password).catch(err => setErrorMessage(err))
 	};
 	return (
 		<div className={'register'}>
 			<p className={'register__welcome'}>Регистрация</p>
-			<p className={'register_error'}>{errorMessage}</p>
+			<p className={'register__error'}>{errorMessage}</p>
 			<form onSubmit={handleSubmit} className={'register__form'}>
 				<input placeholder={'Email'}
 				       required
