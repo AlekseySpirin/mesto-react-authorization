@@ -56,7 +56,6 @@ export default class FormValidator {
     this._buttonElement.removeAttribute('disabled');
   };
   disableSubmitButton = () => {
-    console.log('Пиу')
     this._buttonElement.classList.add(this._inactiveButton);
     this._buttonElement.setAttribute('disabled', 'disabled');
   };
