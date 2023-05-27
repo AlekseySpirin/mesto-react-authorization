@@ -61,6 +61,15 @@
 
 }
 
+.login__error {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 25px;
+
+    color: #FFFFFF;
+}
 
 .login__button-container {
     display: flex;
@@ -80,6 +89,8 @@
 
 
 .login__link {
+    width: 100%;
+    cursor: pointer;
     text-align: center;
     min-height: 50px;
     padding: 0;

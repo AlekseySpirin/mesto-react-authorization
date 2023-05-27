@@ -16,18 +16,20 @@ import Login from "./Login";
 import Register from "./Register";
 import Result from "./Result";
 import {
-	
 	Route,
 	Routes,
 	Navigate,
-	
+	useNavigate,
 } from 'react-router-dom';
 import ProtectedRouteElement from "./ProtectedRoute";
 import NotFound from "./NotFound";
+import {authorize, getContent, register} from "../auth";
+import Loading from "./Loading";
 
 const App = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	
+	const [isLoggedIn, setIsLoggedIn] = useState(null);
+	const [userData, setUserData] = useState(null);
+	const navigate = useNavigate();
 	
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -46,6 +48,15 @@ const App = () => {
 	// const [isSucces, setIsSucces] = useState(false);
 	const [isResultsOpen, setIsResultsOpen] = useState(false);
 	
+	useEffect(() => {
+		Promise.all([api.getServerUserInfo(), api.getInitialCards()])
+			.then(([info, card]) => {
+				setCurrentUser(info);
+				setCards(card);
+			})
+			.catch(err => console.log(err));
+	}, []);
+	
 	// POPUP //
 	
 	function handleEditAvatarClick() {
@@ -63,9 +74,48 @@ const App = () => {
 	// 	setIsSucces(true);
 	// }
 	
-	const handleLogin = () => {
-		setIsLoggedIn(true);
+	const handleRegister = (password, email) => {
+		return register(password, email)
+			.then(() => {
+				
+				navigate('/login');
+			});
+		
 	};
+	
+	const handleLogin = (email, password) => {
+		
+		return authorize(email, password).then((data) => {
+			console.log(data);
+			localStorage.setItem('jwt', data.token);
+			setIsLoggedIn(true);
+			
+			navigate('/cards');
+		});
+	};
+	
+	const checkToken = () => {
+		const jwt = localStorage.getItem('jwt');
+		getContent(jwt).then((data) => {
+			if (data) {
+				setIsLoggedIn(true);
+				navigate('/cards');
+			} else {
+				setIsLoggedIn(false);
+				
+			}
+			console.log(data);
+			setUserData(data);
+		});
+	};
+	
+	useEffect(() => {
+		checkToken();
+	}, []);
+	
+	if (isLoggedIn === null) {
+		return (<Loading/>);
+	}
 	
 	function disableSubmitBtn() {
 		setIsButtonDisabled(true);
@@ -126,15 +176,6 @@ const App = () => {
 	};
 	
 	// API //
-	
-	useEffect(() => {
-		Promise.all([api.getServerUserInfo(), api.getInitialCards()])
-			.then(([info, card]) => {
-				setCurrentUser(info);
-				setCards(card);
-			})
-			.catch(err => console.log(err));
-	}, []);
 	
 	function handleCardLike(card) {
 		const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -230,16 +271,17 @@ const App = () => {
 	return (
 		
 		<CurrentUserContext.Provider value={currentUser}>
-			<Header/>
+			<Header isLoggedIn={isLoggedIn} userData={userData}/>
 			<Result
 				name={'result'}
 				// isSucces={isSucces}
 				isOpen={isResultsOpen}
 				onClose={closeAllPopups}/>
 			<Routes>
-				<Route path="/"  element={isLoggedIn ? <Navigate to="/cards" replace/> :
+				<Route path="/" element={isLoggedIn ? <Navigate to="/cards" replace/> :
 					<Navigate to="/login" replace/>}/>
-				<Route path="/register" element={<Register/>}/>
+				<Route path="/register"
+				       element={<Register handleRegister={handleRegister}/>}/>
 				<Route path="/login" element={<Login handleLogin={handleLogin}/>}/>
 				<Route path="/cards"
 				       element={<ProtectedRouteElement
@@ -253,7 +295,7 @@ const App = () => {
 					       onEditAvatar={handleEditAvatarClick}
 					       onCardDelete={cardDeleteClick}
 				       />}/>
-				<Route path="*" element={<NotFound />} />
+				<Route path="*" element={<NotFound/>}/>
 			</Routes>
 			<Footer/>
 			<EditProfilePopup onUpdateUser={handleUpdateUser}
