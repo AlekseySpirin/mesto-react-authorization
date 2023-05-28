@@ -83,7 +83,11 @@
     height: 10%;
     background-color: #fff;
     border-radius: 2px;
+    transition: ease 0.4s;
+}
 
+.login__button-container:hover {
+    opacity: 0.6;
 }
 
 

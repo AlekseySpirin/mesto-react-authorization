@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import './styles/Register.css';
+import {NavLink, useNavigate} from "react-router-dom";
 
 
-const Register = ({handleRegister}) => {
+const Register = ({handleRegister,showResults}) => {
 	
 	const [formValue, setFormValue] = useState({
 		email: '',
@@ -24,7 +25,10 @@ const Register = ({handleRegister}) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const {email, password} = formValue;
-		handleRegister(email, password).catch(err => setErrorMessage(err))
+		handleRegister(email, password).catch((err) => {
+			setErrorMessage(err)
+			showResults()
+		})
 	};
 	return (
 		<div className={'register'}>
@@ -52,7 +56,7 @@ const Register = ({handleRegister}) => {
 			</form>
 			<div className="register__signin">
 				<p>Уже зарегистрированы?</p>
-				<p className="register__login-link">Войти</p>
+				<NavLink className="register__login-link" to="/login"><p>Войти</p></NavLink>
 			</div>
 		</div>
 	);
