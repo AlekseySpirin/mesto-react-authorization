@@ -24,16 +24,18 @@ function Header({isLoggedIn, userData, setIsLoggedIn}) {
 			<nav className="menu">
 				{isLoggedIn ? <NavLink className={'user__link'} to="#">
 					<p className={'user__email'}>
-						{/*{userData.data.email} */}
+						{/*userData.data.email*/}
 					</p></NavLink> : ''}
 				{location.pathname === "/register"
 					&& <NavLink to="/login"
 					            className={({isActive}) => `menu__item ${isActive ? "menu__item_active" : ""}`}> {isLoggedIn ?
 						<p onClick={signOut}
 						   className={'menu__exit'}>Выйти</p> : 'Войти'}</NavLink>}
+				
 				{location.pathname === "/login"
 					&& <NavLink to="/register"
 					            className={({isActive}) => `menu__item ${isActive ? "menu__item_active" : ""}`}>{isLoggedIn ? '' : 'Регистрация'}</NavLink>}
+				{isLoggedIn ? <NavLink to="/login" className={'menu__item'}> <p onClick={signOut} className={'menu__exit'}>Выйти</p></NavLink> : ''}
 			</nav>
 		</header>
 	);
