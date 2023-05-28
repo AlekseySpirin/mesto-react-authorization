@@ -74,6 +74,13 @@
     height: 10%;
     background-color: #fff;
     border-radius: 2px;
+    transition: ease 0.4s;
+
+
+}
+
+.register__button-container:hover {
+    opacity: 0.6;
 
 }
 
@@ -116,3 +123,14 @@
 
     color: #FFFFFF;
 }
+
+.register__login-link {
+    text-decoration: none;
+    color: #fff;
+    transition: ease 0.4s;
+}
+
+.register__login-link:hover {
+    opacity: 0.6;
+}
+

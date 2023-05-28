@@ -3,7 +3,7 @@ import './styles/Result.css';
 import SuccesImg from '../images/svg/Success.svg';
 import FailImg from '../images/svg/Fail.svg';
 
-const Result = ({name, isOpen, isSucces, onClose}) => {
+const InfoTooltip = ({name, isOpen, isSucces, onClose}) => {
 	return (
 		<div className={`pop-up  ${isOpen ? 'pop-up_active' : ''}`}>
 			<div className="pop-up__container">
@@ -25,4 +25,4 @@ const Result = ({name, isOpen, isSucces, onClose}) => {
 	);
 };
 
-export default Result;
+export default InfoTooltip;

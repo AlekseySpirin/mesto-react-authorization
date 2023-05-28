@@ -14,12 +14,12 @@ import FormValidator from "../utils/FormValidator";
 import './styles/App.css';
 import Login from "./Login";
 import Register from "./Register";
-import Result from "./Result";
+import InfoTooltip from "./InfoTooltip";
 import {
 	Route,
 	Routes,
 	Navigate,
-	useNavigate,
+	useNavigate, useLocation,
 } from 'react-router-dom';
 import ProtectedRouteElement from "./ProtectedRoute";
 import NotFound from "./NotFound";
@@ -29,6 +29,7 @@ import Loading from "./Loading";
 const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(null);
 	const [userData, setUserData] = useState(null);
+	const location = useLocation()
 	const navigate = useNavigate();
 	
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -45,9 +46,23 @@ const App = () => {
 	const [cardToDelete, setCardToDelete] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-	// const [isSucces, setIsSucces] = useState(false);
+	const [isSuccess, setIsSuccess] = useState(false);
 	const [isResultsOpen, setIsResultsOpen] = useState(false);
-	
+	const handleLogin = (email, password) => {
+		
+		return authorize(email, password).then((data) => {
+			
+			
+			
+			console.log(data);
+			localStorage.setItem('jwt', data.token);
+			console.log(data.token);
+			setIsLoggedIn(true);
+			
+			navigate('/cards');
+			
+		});
+	};
 	useEffect(() => {
 		Promise.all([api.getServerUserInfo(), api.getInitialCards()])
 			.then(([info, card]) => {
@@ -66,47 +81,44 @@ const App = () => {
 		
 	}
 	
-	// function showResults(){
-	// 	setIsResultsOpen(true)
-	// }
-	//
-	// function successResult() {
-	// 	setIsSucces(true);
-	// }
+	function showResults(){
+		setIsResultsOpen(true)
+	}
+
+	function successResult() {
+		setIsSuccess(true);
+	}
 	
 	const handleRegister = (password, email) => {
 		return register(password, email)
-			.then(() => {
-				
+			.then((data) => {
+				console.log(data)
+				successResult()
+				showResults()
 				navigate('/login');
 			});
 		
 	};
 	
-	const handleLogin = (email, password) => {
-		
-		return authorize(email, password).then((data) => {
-			console.log(data);
-			localStorage.setItem('jwt', data.token);
-			setIsLoggedIn(true);
-			
-			navigate('/cards');
-		});
-	};
+	
 	
 	const checkToken = () => {
 		const jwt = localStorage.getItem('jwt');
 		getContent(jwt).then((data) => {
 			if (data) {
+				console.log(data)
 				setIsLoggedIn(true);
-				navigate('/cards');
+				navigate(location.pathname);
 			} else {
 				setIsLoggedIn(false);
 				
 			}
 			console.log(data);
 			setUserData(data);
-		});
+		}).catch((err) => {
+			setIsLoggedIn(false);
+			console.log(err)
+		})
 	};
 	
 	useEffect(() => {
@@ -271,17 +283,18 @@ const App = () => {
 	return (
 		
 		<CurrentUserContext.Provider value={currentUser}>
-			<Header isLoggedIn={isLoggedIn} userData={userData}/>
-			<Result
+			<Header setIsLoggedIn={setIsLoggedIn}  isLoggedIn={isLoggedIn} userData={userData}/>
+			<InfoTooltip
 				name={'result'}
-				// isSucces={isSucces}
+				
+				isSucces={isSuccess}
 				isOpen={isResultsOpen}
 				onClose={closeAllPopups}/>
 			<Routes>
 				<Route path="/" element={isLoggedIn ? <Navigate to="/cards" replace/> :
 					<Navigate to="/login" replace/>}/>
 				<Route path="/register"
-				       element={<Register handleRegister={handleRegister}/>}/>
+				       element={<Register handleRegister={handleRegister} showResults={showResults}/>}/>
 				<Route path="/login" element={<Login handleLogin={handleLogin}/>}/>
 				<Route path="/cards"
 				       element={<ProtectedRouteElement
