@@ -1,6 +1,10 @@
 import logo320 from "../images/svg/logo320.svg";
 import logo from "../images/svg/logo.svg";
-import {NavLink, useLocation, useNavigate} from 'react-router-dom';
+import {
+	NavLink,
+	useLocation,
+	useNavigate
+} from 'react-router-dom';
 import './styles/Header.css';
 
 function Header({isLoggedIn, userData, setIsLoggedIn}) {
@@ -24,18 +28,46 @@ function Header({isLoggedIn, userData, setIsLoggedIn}) {
 			<nav className="menu">
 				{isLoggedIn ? <NavLink className={'user__link'} to="#">
 					<p className={'user__email'}>
-						{/*userData.data.email*/}
+						{/*Выдает ошибку при первой загрузке страницы,*/}
+						{/*так как данные о пользователе подтягиваются при проверке токена,*/}
+						{/*при логине данные о email не приходят с сервера, токоль токен.*/}
+						{/*{userData.data.email}*/}
 					</p></NavLink> : ''}
 				{location.pathname === "/register"
 					&& <NavLink to="/login"
-					            className={({isActive}) => `menu__item ${isActive ? "menu__item_active" : ""}`}> {isLoggedIn ?
-						<p onClick={signOut}
-						   className={'menu__exit'}>Выйти</p> : 'Войти'}</NavLink>}
-				
+					            className={'menu__item'}>
+						{isLoggedIn ? <p onClick={signOut}
+						                 className={'menu__exit'}>Выйти</p> : 'Войти'}</NavLink>}
 				{location.pathname === "/login"
 					&& <NavLink to="/register"
-					            className={({isActive}) => `menu__item ${isActive ? "menu__item_active" : ""}`}>{isLoggedIn ? '' : 'Регистрация'}</NavLink>}
-				{isLoggedIn ? <NavLink to="/login" className={'menu__item'}> <p onClick={signOut} className={'menu__exit'}>Выйти</p></NavLink> : ''}
+					            className={'menu__item'}>Регистрация</NavLink>}
+				{isLoggedIn ?
+					<NavLink to="/login" className={'menu__item'}><p onClick={signOut}
+					                                                 className={'menu__exit'}>Выйти</p>
+					</NavLink> : ''}
+				{/*[div] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>*/}
+				{/*<Routes>*/}
+				{/*	<Route exact path="/">*/}
+				{/*		*/}
+				{/*		<div className="header__wrapper">*/}
+				{/*			<p className="header__user">{userData.data.email}</p>*/}
+				{/*			<button className="header__logout" onClick={signOut}>*/}
+				{/*				Выйти*/}
+				{/*			</button>*/}
+				{/*		</div>*/}
+				{/*		*/}
+				{/*	</Route>*/}
+				{/*	<Route path="/signup">*/}
+				{/*		<Link className="header__auth-link" to="signin">*/}
+				{/*			Войти*/}
+				{/*		</Link>*/}
+				{/*	</Route>*/}
+				{/*	<Route path="/signin">*/}
+				{/*		<Link className="header__auth-link" to="signup">*/}
+				{/*			Регистрация*/}
+				{/*		</Link>*/}
+				{/*	</Route>*/}
+				{/*</Routes>*/}
 			</nav>
 		</header>
 	);

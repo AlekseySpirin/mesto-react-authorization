@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import './styles/Login.css'
-
-
-
+import './styles/Login.css';
 
 // import {Link, useNavigate} from 'react-router-dom';
 const Login = ({handleLogin}) => {
@@ -13,7 +10,6 @@ const Login = ({handleLogin}) => {
 	
 	const [errorMessage, setErrorMessage] = useState('');
 	
-
 	const handleChange = (e) => {
 		const {name, value} = e.target;
 		
@@ -26,25 +22,22 @@ const Login = ({handleLogin}) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const {email, password} = formValue;
-		handleLogin(email, password).catch(err => setErrorMessage(err))
+		handleLogin(email, password).catch(err => setErrorMessage(err));
 	};
-	
-	
-	
-	
 	
 	return (
 		<div className={'login'}>
 			<p className={'login__welcome'}>Вход</p>
 			<p className={'login__error'}>{errorMessage}</p>
 			<form onSubmit={handleSubmit} className={'login__form'}>
-				
 				<input placeholder={'Email'}
 				       required
 				       id={'email'}
 				       name={'email'}
 				       type="text"
-				       onChange={handleChange}/>
+				       onChange={handleChange}
+				value={formValue.email}
+				/>
 				
 				<input placeholder={'Пароль'}
 				       required
@@ -52,9 +45,12 @@ const Login = ({handleLogin}) => {
 				       name={'password'}
 				       type={'password'}
 				       onChange={handleChange}
-				      />
+				       value={formValue.email}
+				/>
 				<div className="login__button-container">
-					<button onSubmit={handleSubmit} type="submit" className="login__link">Войти</button>
+					<button  type="submit"
+					        className="login__link">Войти
+					</button>
 				</div>
 			</form>
 		</div>

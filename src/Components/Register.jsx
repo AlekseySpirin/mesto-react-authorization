@@ -50,7 +50,7 @@ const Register = ({handleRegister,showResults}) => {
 				       onChange={handleChange}
 				/>
 				<div className="register__button-container">
-					<button onSubmit={handleSubmit} type="submit" className="register__link">Зарегистрироваться
+					<button  type="submit" className="register__link">Зарегистрироваться
 					</button>
 				</div>
 			</form>

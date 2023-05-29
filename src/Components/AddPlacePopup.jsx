@@ -1,20 +1,20 @@
 import {useEffect, useState} from 'react';
 import PopupWithForm from "./PopupWithForm";
 import './styles/AddPlacePopup.css';
+import {useFormAndValidation} from "../utils/hooks/useFormAndValidation";
 const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
-	const [values, setValues] = useState({name: '', link: ''});
-	
+	const {values, handleChange, errors, isValid,  resetForm} = useFormAndValidation({place: '', link: ''})
 	
 	useEffect(() => {
 		if (isOpen) {
-			setValues({name: '', link: ''});
+			resetForm({ place: '', link: ''}, {}, false);
 		}
-		
-	}, [isOpen]);
+	}, [isOpen, resetForm]);
 	
 	function handleAddPlaceSubmit(e) {
 		e.preventDefault();
-		onAddPlace({name: values.name, link: values.link});
+		console.log(values.place)
+		onAddPlace({name: values.place, link: values.link}, resetForm);
 		
 	}
 	
@@ -26,12 +26,15 @@ const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
 			onClose={onClose}
 			onSubmit={handleAddPlaceSubmit}
 			isLoading={isLoading}
-			submitButtonText={'Создать'}>
+			submitButtonText={'Создать'}
+			isValid={isValid}
+			>
+			
 			<input
 				id="place"
 				name="place"
-				value={values.name}
-				onChange={(e) => setValues({...values, name: e.target.value})}
+				value={values.place}
+				onChange={handleChange}
 				className="form__item form__item_el_name"
 				type="text"
 				placeholder="Название"
@@ -39,18 +42,18 @@ const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
 				maxLength="30"
 				required
 			/>
-			<span className="form__item-error form__item-error_el_place"></span>
+			{errors.place && <span className="form__item-error form__item-error_el_place">{errors.place}</span>}
 			<input
 				id="link"
 				name="link"
 				value={values.link}
-				onChange={(e) => setValues({...values, link: e.target.value})}
+				onChange={handleChange}
 				className="form__item form__item_el_link"
 				type="url"
 				placeholder="Ссылка на картинку"
 				required
 			/>
-			<span className="form__item-error form__item-error_el_link"></span>
+			{errors.link && <span className="form__item-error form__item-error_el_link">{errors.link}</span>}
 		</PopupWithForm>
 	);
 };

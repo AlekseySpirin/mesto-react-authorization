@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles/Result.css';
-import SuccesImg from '../images/svg/Success.svg';
-import FailImg from '../images/svg/Fail.svg';
+import successImg from '../images/svg/Success.svg';
+import failImg from '../images/svg/Fail.svg';
 
 const InfoTooltip = ({name, isOpen, isSucces, onClose}) => {
 	return (
@@ -9,7 +9,7 @@ const InfoTooltip = ({name, isOpen, isSucces, onClose}) => {
 			<div className="pop-up__container">
 				<div className={'result'}>
 					<img className={'result__img'}
-					     src={isSucces ? SuccesImg : FailImg}
+					     src={isSucces ? successImg : failImg}
 					     alt={isSucces ? 'Success' : 'Fail'}/>
 					<p
 						className={'result__text'}>{
