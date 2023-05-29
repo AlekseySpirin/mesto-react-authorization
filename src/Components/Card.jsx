@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import './styles/Card.css'
+import './styles/Card.css';
 
 function Card({card, onCardClick, onCardLike, onCardDelete}) {
 	
@@ -23,13 +23,17 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
 		onCardDelete(card);
 	};
 	
-	return (<li className="card" key={card._id}>
-		<img className="card__img" src={card.link} alt={card.name}
+	return (<li className="card">
+		<img className="card__img"
+		     src={card.link}
+		     alt={card.name}
 		     onClick={handleClick}/>
 		<h2 className="card__title">{card.name}</h2>
 		<div className="card__likes-container">
-			<button onClick={handleLikeClick} type="button"
-			        className={cardLikeButtonClassName}></button>
+			<button onClick={handleLikeClick}
+			        type="button"
+			        className={cardLikeButtonClassName}>
+			</button>
 			<p className="card__like_el_count">{card.likes.length}</p>
 		</div>
 		{isOwn && <button onClick={handleCardDelete} className="card__trash"/>}

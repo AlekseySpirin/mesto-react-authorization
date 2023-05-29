@@ -1,5 +1,5 @@
 import '../index.css';
-import Header from "./Header";
+import Headerr from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
@@ -75,8 +75,8 @@ const App = () => {
 	// POPUP //
 	
 	function handleEditAvatarClick() {
-		formValidators['update-avatar'].resetValidation();
-		formValidators['update-avatar'].disableSubmitButton();
+		// formValidators['update-avatar'].resetValidation();
+		// formValidators['update-avatar'].disableSubmitButton();
 		setIsEditAvatarPopupOpen(true);
 		
 	}
@@ -150,12 +150,12 @@ const App = () => {
 	}
 	
 	function handleAddPlaceClick() {
-		formValidators['add-place'].resetValidation();
+		// formValidators['add-place'].resetValidation();
 		setIsAddPlacePopupOpen(true);
 	}
 	
 	function handleEditProfileClick() {
-		formValidators['edit-profile'].resetValidation();
+		// formValidators['edit-profile'].resetValidation();
 		setCurrentUser({
 			name: currentUser.name,
 			about: currentUser.about,
@@ -171,6 +171,7 @@ const App = () => {
 		setIsPopupWithConfirmOpen(false);
 		setIsResultsOpen(false);
 		setSelectedCard(null);
+		
 	}
 	
 	// CARDS //
@@ -220,70 +221,52 @@ const App = () => {
 	// При закрытии на крестик, все отрабатывает нормально.
 	
 	function handleUpdateUser({name, about}) {
-		formValidators['edit-profile'].disableSubmitButton();
+		// formValidators['edit-profile'].disableSubmitButton();
 		loadingContent();
 		api.editServerProfile({name, about}).then((userInfo) => {
+			
 			setCurrentUser(userInfo);
 			closeAllPopups();
 		}).catch((err) => {
-			formValidators['edit-profile'].enableSubmitButton();
+			// formValidators['edit-profile'].enableSubmitButton();
 			console.log(err);
 		}).finally(() => {loadedContent();});
 	}
 	
-	function handleUpdateAvatar({avatar}) {
+	function handleUpdateAvatar({avatar}, resetForm) {
 		disableSubmitBtn();
 		loadingContent();
 		api.editAvatar({avatar}).then((userAvatar) => {
 			setCurrentUser(userAvatar);
 			closeAllPopups();
+			resetForm({ link: '' }, {}, false)
 			disableSubmitBtn();
+			
 		}).catch((err) => {
 			enableSubmitBtn();
 			console.log(err);
 		}).finally(() => {loadedContent();});
 	}
 	
-	function handleAddPlace({name, link}) {
-		formValidators['add-place'].disableSubmitButton();
+	function handleAddPlace({name, link}, resetForm) {
+		// formValidators['add-place'].disableSubmitButton();
 		loadingContent();
 		api.addCardServer({name, link}).then((newCard) => {
 			setCards([newCard, ...cards]);
 			closeAllPopups();
+			resetForm({ place: '', link: ''}, {}, false)
 		}).catch((err) => {
-			formValidators['add-place'].enableSubmitButton();
+			// formValidators['add-place'].enableSubmitButton();
 			console.log(err);
 		}).finally(() => {loadedContent();});
 	}
 	
-	// VALIDATION //
-	
-	const formValidators = {};
-	
-	const enableValidation = (config) => {
-		const formList = Array.from(document.querySelectorAll(config.formSelector));
-		formList.forEach((formElement) => {
-			const validator = new FormValidator(config, formElement);
-			const formName = formElement.getAttribute('name');
-			
-			formValidators[formName] = validator;
-			validator.enableValidation();
-		});
-	};
-	
-	enableValidation({
-		formSelector: '.form',
-		inputSelector: '.form__item',
-		submitButtonSelector: '.pop-up__button',
-		inactiveButtonClass: 'pop-up__button_disabled',
-		inputErrorClass: 'form__item_invalid',
-		errorClass: 'form__item-error',
-	});
+
 	
 	return (
 		
 		<CurrentUserContext.Provider value={currentUser}>
-			<Header setIsLoggedIn={setIsLoggedIn}  isLoggedIn={isLoggedIn} userData={userData}/>
+			<Headerr setIsLoggedIn={setIsLoggedIn}  isLoggedIn={isLoggedIn} userData={userData}/>
 			<InfoTooltip
 				name={'result'}
 				
