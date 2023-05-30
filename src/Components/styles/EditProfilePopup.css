@@ -12,6 +12,7 @@
 .form__item:focus {
     outline: none;
 }
+
 .form__item_el_name {
     width: 358px;
     min-height: 27px;
@@ -22,6 +23,7 @@
         width: 235px;
     }
 }
+
 .form__item-error {
     display: block;
     min-height: 30px;
@@ -32,6 +34,7 @@
     line-height: calc(1 / 12 * 15);
     z-index: 10;
 }
+
 .form__item_el_info {
     width: 358px;
     min-height: 27px;

@@ -5,77 +5,72 @@ class Api {
 	}
 	
 	_getResponseData(res) {
-		if (!res.ok) {
-			return Promise.reject(`Ошибка: ${res.status}`);
+		if (res.ok) {
+			return res.json();
 		}
-		return res.json();
+		return Promise.reject(`Ошибка ${res.status}`);
+	}
+	
+	_request(endpoint, options) {
+		
+		
+		return fetch(`${this.url}${endpoint}`, options).then(this._getResponseData);
 	}
 	
 	getInitialCards() {
-		return fetch(`${this.url}/cards`, {
+		return this._request('/cards', {
 			method: 'GET',
 			headers: this.headers,
-		}).then((res) => this._getResponseData(res));
+		})
 	}
 	
 	getServerUserInfo() {
-		return fetch(`${this.url}/users/me`, {
+		return this._request('/users/me', {
 			method: 'GET',
 			headers: this.headers,
-		}).then((res) => this._getResponseData(res));
+		})
+		
 	}
 	
 	editServerProfile({name, about}) {
-		return fetch(`${this.url}/users/me`, {
+		return this._request('/users/me', {
 			method: 'PATCH',
 			headers: this.headers,
 			body: JSON.stringify({name, about}),
-		}).then((res) => this._getResponseData(res));
+		})
 	}
 	
 	editAvatar({avatar}) {
-		return fetch(`${this.url}/users/me/avatar`, {
+		return this._request('/users/me/avatar', {
 			method: 'PATCH',
 			headers: this.headers,
 			body: JSON.stringify({avatar}),
-		}).then((res) => this._getResponseData(res));
+		})
+		
 	}
 	
 	addCardServer({name, link}) {
-		return fetch(`${this.url}/cards`, {
+		return this._request('/cards', {
 			method: 'POST',
 			headers: this.headers,
 			body: JSON.stringify({name, link}),
-		}).then((res) => this._getResponseData(res));
+		})
 	}
 	
 	deleteCardServer(cardId) {
-		return fetch(`${this.url}/cards/${cardId}`, {
+		return this._request(`/cards/${cardId}`, {
 			method: 'DELETE',
 			headers: this.headers,
-		}).then((res) => this._getResponseData(res));
+		})
+	
 	}
 	
-	// addLikeServer(cardId) {
-	// 	return fetch(`${this.url}/cards/${cardId}/likes`, {
-	// 		method: 'PUT',
-	// 		headers: this.headers,
-	// 	}).then((res) => this._getResponseData(res));
-	// }
-	//
-	// deleteLikeServer(cardId) {
-	// 	return fetch(`${this.url}/cards/${cardId}/likes`, {
-	// 		method: 'DELETE',
-	// 		headers: this.headers,
-	// 	}).then((res) => this._getResponseData(res));
-	// }
 	
 	changeLikeCardStatus(cardId, isLiked) {
-		
-		return fetch(`${this.url}/cards/${cardId}/likes`, {
+		return this._request(`/cards/${cardId}/likes`, {
 			method: isLiked ? 'PUT' : 'DELETE',
 			headers: this.headers,
-		}).then((res) => this._getResponseData(res));
+		})
 	}
 }
 

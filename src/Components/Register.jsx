@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import './styles/Register.css';
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
-
-const Register = ({handleRegister,showResults}) => {
+const Register = ({handleRegister, showResults}) => {
 	
 	const [formValue, setFormValue] = useState({
 		email: '',
@@ -11,8 +10,6 @@ const Register = ({handleRegister,showResults}) => {
 	});
 	
 	const [errorMessage, setErrorMessage] = useState('');
-	
-
 	
 	const handleChange = (e) => {
 		const {name, value} = e.target;
@@ -26,9 +23,9 @@ const Register = ({handleRegister,showResults}) => {
 		e.preventDefault();
 		const {email, password} = formValue;
 		handleRegister(email, password).catch((err) => {
-			setErrorMessage(err)
-			showResults()
-		})
+			setErrorMessage(err);
+			showResults();
+		});
 	};
 	return (
 		<div className={'register'}>
@@ -50,13 +47,14 @@ const Register = ({handleRegister,showResults}) => {
 				       onChange={handleChange}
 				/>
 				<div className="register__button-container">
-					<button  type="submit" className="register__link">Зарегистрироваться
+					<button type="submit" className="register__link">Зарегистрироваться
 					</button>
 				</div>
 			</form>
 			<div className="register__signin">
 				<p>Уже зарегистрированы?</p>
-				<NavLink className="register__login-link" to="/login"><p>Войти</p></NavLink>
+				<NavLink className="register__login-link" to="/login"><p>Войти</p>
+				</NavLink>
 			</div>
 		</div>
 	);

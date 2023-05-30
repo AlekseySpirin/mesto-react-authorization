@@ -1,19 +1,26 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import PopupWithForm from "./PopupWithForm";
 import './styles/AddPlacePopup.css';
 import {useFormAndValidation} from "../utils/hooks/useFormAndValidation";
+
 const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
-	const {values, handleChange, errors, isValid,  resetForm} = useFormAndValidation({place: '', link: ''})
+	const {
+		values,
+		handleChange,
+		errors,
+		isValid,
+		resetForm
+	} = useFormAndValidation({place: '', link: ''});
 	
 	useEffect(() => {
 		if (isOpen) {
-			resetForm({ place: '', link: ''}, {}, false);
+			resetForm({place: '', link: ''}, {}, false);
 		}
 	}, [isOpen, resetForm]);
 	
 	function handleAddPlaceSubmit(e) {
 		e.preventDefault();
-		console.log(values.place)
+		console.log(values.place);
 		onAddPlace({name: values.place, link: values.link}, resetForm);
 		
 	}
@@ -28,8 +35,7 @@ const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
 			isLoading={isLoading}
 			submitButtonText={'Создать'}
 			isValid={isValid}
-			>
-			
+		>
 			<input
 				id="place"
 				name="place"
@@ -42,7 +48,8 @@ const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
 				maxLength="30"
 				required
 			/>
-			{errors.place && <span className="form__item-error form__item-error_el_place">{errors.place}</span>}
+			{errors.place && <span
+				className="form__item-error form__item-error_el_place">{errors.place}</span>}
 			<input
 				id="link"
 				name="link"
@@ -53,7 +60,8 @@ const AddPlacePopup = ({isOpen, onClose, onAddPlace, isLoading}) => {
 				placeholder="Ссылка на картинку"
 				required
 			/>
-			{errors.link && <span className="form__item-error form__item-error_el_link">{errors.link}</span>}
+			{errors.link && <span
+				className="form__item-error form__item-error_el_link">{errors.link}</span>}
 		</PopupWithForm>
 	);
 };

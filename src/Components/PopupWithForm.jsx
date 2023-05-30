@@ -1,5 +1,6 @@
 import Loading from "./Loading";
-import './styles/PopupWithForm.css'
+import './styles/PopupWithForm.css';
+
 function PopupWithForm({
 	                       title,
 	                       name,
@@ -11,9 +12,6 @@ function PopupWithForm({
 	                       isLoading,
 	                       isValid
                        }) {
-	
-
-	
 	
 	return (
 		<div className={`pop-up  ${isOpen ? 'pop-up_active' : ''}`}>

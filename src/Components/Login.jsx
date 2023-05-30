@@ -23,6 +23,7 @@ const Login = ({handleLogin}) => {
 		e.preventDefault();
 		const {email, password} = formValue;
 		handleLogin(email, password).catch(err => setErrorMessage(err));
+		
 	};
 	
 	return (
@@ -36,7 +37,7 @@ const Login = ({handleLogin}) => {
 				       name={'email'}
 				       type="text"
 				       onChange={handleChange}
-				value={formValue.email}
+				       value={formValue.email}
 				/>
 				
 				<input placeholder={'Пароль'}
@@ -45,10 +46,10 @@ const Login = ({handleLogin}) => {
 				       name={'password'}
 				       type={'password'}
 				       onChange={handleChange}
-				       value={formValue.email}
+				       value={formValue.password}
 				/>
 				<div className="login__button-container">
-					<button  type="submit"
+					<button type="submit"
 					        className="login__link">Войти
 					</button>
 				</div>
