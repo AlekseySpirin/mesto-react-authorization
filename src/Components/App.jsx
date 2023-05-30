@@ -63,7 +63,7 @@ const App = () => {
 			});
 	}
 	
-	const handleLogin = (email, password) => {
+	const handleLogin = ({email, password}, resetForm) => {
 		return authorize(email, password).then((data) => {
 			console.log(data);
 			localStorage.setItem('jwt', data.token);
@@ -71,6 +71,7 @@ const App = () => {
 			setIsLoggedIn(true);
 			navigate('/cards');
 			getLoginUserDataFromToken(data);
+			resetForm()
 		});
 		
 	};
@@ -113,19 +114,20 @@ const App = () => {
 		setIsSuccess(true);
 	}
 	
-	const handleRegister = (password, email) => {
-		return register(password, email)
+	const handleRegister = ({email, password }, resetForm) => {
+		return register(email, password)
 			.then((data) => {
 				console.log(data);
 				successResult();
 				showResults();
 				navigate('/login');
+				resetForm()
 			});
 	};
 	
 	const checkToken = () => {
 		const jwt = localStorage.getItem('jwt');
-		return getContent(jwt).then((data) => {
+		getContent(jwt).then((data) => {
 			if (data) {
 				console.log(data);
 				setIsLoggedIn(true);
