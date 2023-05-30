@@ -24,6 +24,7 @@
         min-height: 56px;
     }
 }
+
 .logo {
     width: 142px;
     height: 42px;
@@ -91,6 +92,7 @@
 
 
 }
+
 .menu__exit {
     margin: 0 0 0 auto;
     font-family: 'Inter', serif;

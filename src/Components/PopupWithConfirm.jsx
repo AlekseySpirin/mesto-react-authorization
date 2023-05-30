@@ -1,6 +1,6 @@
 import React from 'react';
 import PopupWithForm from "./PopupWithForm";
-import './styles/PopupWithConfirm.css'
+import './styles/PopupWithConfirm.css';
 import {useFormAndValidation} from "../utils/hooks/useFormAndValidation";
 
 const PopupWithConfirm = ({isOpen, onClose, onSubmit, isLoading}) => {
@@ -9,7 +9,8 @@ const PopupWithConfirm = ({isOpen, onClose, onSubmit, isLoading}) => {
 		e.preventDefault();
 		onSubmit();
 	}
-	const {isValid} = useFormAndValidation()
+	
+	const {isValid} = useFormAndValidation();
 	return (
 		<PopupWithForm
 			name={'delete-card'}
@@ -21,7 +22,7 @@ const PopupWithConfirm = ({isOpen, onClose, onSubmit, isLoading}) => {
 			submitButtonText={'Да'}
 			isValid={isValid}
 		/>
-		
+	
 	);
 };
 

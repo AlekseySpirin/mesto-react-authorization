@@ -1,10 +1,6 @@
 import logo320 from "../images/svg/logo320.svg";
 import logo from "../images/svg/logo.svg";
-import {
-	NavLink,
-	useLocation,
-	useNavigate
-} from 'react-router-dom';
+import {NavLink, useLocation, useNavigate} from 'react-router-dom';
 import './styles/Header.css';
 
 function Header({isLoggedIn, userData, setIsLoggedIn}) {
@@ -31,7 +27,7 @@ function Header({isLoggedIn, userData, setIsLoggedIn}) {
 						{/*Выдает ошибку при первой загрузке страницы,*/}
 						{/*так как данные о пользователе подтягиваются при проверке токена,*/}
 						{/*при логине данные о email не приходят с сервера, токоль токен.*/}
-						{/*{userData.data.email}*/}
+						{userData?.data.email}
 					</p></NavLink> : ''}
 				{location.pathname === "/register"
 					&& <NavLink to="/login"
