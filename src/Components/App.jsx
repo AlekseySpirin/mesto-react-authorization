@@ -26,8 +26,7 @@ import ProtectedRouteElement from './ProtectedRoute';
 import NotFound from './NotFound';
 import Loading from './Loading';
 
-// eslint-disable-next-line func-names
-const App = function () {
+function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userData, setUserData] = useState(null);
   const location = useLocation();
@@ -47,9 +46,6 @@ const App = function () {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
-
-  // const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
-  // isAddPlacePopupOpen || selectedCard || isImagePopupOpen;
 
   function getLoginUserDataFromToken(info) {
     getContent(info.token)
@@ -128,30 +124,8 @@ const App = function () {
   }, []);
 
   if (isLoggedIn === null) {
-    // eslint-disable-next-line react/react-in-jsx-scope
     return <Loading />;
   }
-
-  function loadingContent() {
-    setIsLoading(true);
-  }
-
-  function loadedContent() {
-    setIsLoading(false);
-  }
-
-  // можно сделать универсальную функцию, которая принимает функцию запроса
-  // function handleSubmit(request) {
-  //   // изменяем текст кнопки до вызова запроса
-  //   setIsLoading(true);
-  //   request()
-  //     // закрывать попап нужно только в `then`
-  //     .then(closeAllPopups)
-  //     // в каждом запросе нужно ловить ошибку
-  //     // console.error обычно используется для логирования ошибок, если
-  // никакой // другой обработки ошибки нет .catch(console.error) // в каждом
-  // запросе в `finally` нужно возвращать обратно начальный текст // кнопки
-  // .finally(() => setIsLoading(false)); }
 
   function handlePopupWithConfirmClick() {
     setIsPopupWithConfirmOpen(true);
@@ -180,39 +154,30 @@ const App = function () {
   }
 
   function handleSubmit(request) {
-    // изменяем текст кнопки до вызова запроса
     setIsLoading(true);
     request()
-      // закрывать попап нужно только в `then`
       .then(closeAllPopups)
-      // в каждом запросе нужно ловить ошибку
-      // console.error обычно используется для логирования ошибок, если никакой
-      // другой обработки ошибки нет
+
       .catch(console.error)
-      // в каждом запросе в `finally` нужно возвращать обратно начальный текст
-      // кнопки
+
       .finally(() => setIsLoading(false));
   }
 
-  // CARDS //
   function handleCardClick(card) {
     setSelectedCard(card);
   }
 
   function handleCardDelete() {
-    loadingContent();
-    api
-      // eslint-disable-next-line no-underscore-dangle
-      .deleteCardServer(cardToDelete._id)
-      .then(() => {
-        // eslint-disable-next-line no-underscore-dangle
+    function makeRequest() {
+      return api.deleteCardServer(cardToDelete._id).then(() => {
         const updatedCards = cards.filter((c) => c._id !== cardToDelete._id);
         setCards(updatedCards);
         setIsPopupWithConfirmOpen(false);
         setCardToDelete(null);
-      })
-      .catch(console.error)
-      .finally(loadedContent);
+      });
+    }
+
+    handleSubmit(makeRequest);
   }
 
   const submitFormConfirmDelete = (card) => {
@@ -224,72 +189,54 @@ const App = function () {
     setCardToDelete(card);
   };
 
-  // API //
-
   function handleCardLike(card) {
-    // eslint-disable-next-line no-underscore-dangle
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api
-      // eslint-disable-next-line no-underscore-dangle
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        // eslint-disable-next-line no-underscore-dangle
+
+    function makeRequest() {
+      return api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
         setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c)),
         );
-      })
-      .catch(console.error);
+      });
+    }
+
+    handleSubmit(makeRequest);
   }
 
   function handleUpdateUser({ name, about }) {
-    loadingContent();
-    api
-      .editServerProfile({
-        name,
-        about,
-      })
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
-        closeAllPopups();
-      })
-      .catch(console.error)
-      .finally(loadedContent);
+    function makeRequest() {
+      return api
+        .editServerProfile({
+          name,
+          about,
+        })
+        .then(setCurrentUser);
+    }
+
+    handleSubmit(makeRequest);
   }
 
-  function handleUpdateAvatar({ avatar }, resetForm) {
-    loadingContent();
-    api
-      .editAvatar({ avatar })
-      .then((userAvatar) => {
-        setCurrentUser(userAvatar);
-        closeAllPopups();
-        resetForm({ link: '' }, {}, false);
-      })
-      .catch(console.error)
-      .finally(loadedContent);
+  function handleUpdateAvatar({ avatar }) {
+    function makeRequest() {
+      return api.editAvatar({ avatar }).then(setCurrentUser);
+    }
+
+    handleSubmit(makeRequest);
   }
 
-  function handleAddPlace({ name, link }, resetForm) {
-    loadingContent();
-    api
-      .addCardServer({
-        name,
-        link,
-      })
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
-        closeAllPopups();
-        resetForm(
-          {
-            place: '',
-            link: '',
-          },
-          {},
-          false,
-        );
-      })
-      .catch(console.error)
-      .finally(loadedContent);
+  function handleAddPlace({ name, link }) {
+    function makeRequest() {
+      return api
+        .addCardServer({
+          name,
+          link,
+        })
+        .then((newCard) => {
+          setCards([newCard, ...cards]);
+        });
+    }
+
+    handleSubmit(makeRequest);
   }
 
   return (
@@ -372,6 +319,5 @@ const App = function () {
       <ImagePopup selectedCard={selectedCard} onClose={closeAllPopups} />
     </CurrentUserContext.Provider>
   );
-};
-
+}
 export default App;
