@@ -22,7 +22,7 @@
 }
 
 
-.pop-up_place_img {
+.popup_type_img {
     background-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -37,7 +37,7 @@
     color: #ffffff;
 }
 
-.pop-up__container_place_img {
+.pop-up__container_type_img {
     display: flex;
     position: relative;
     flex-wrap: wrap;
