@@ -12,7 +12,7 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
-import { api } from '../utils/Api';
+import Api from '../utils/Api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -46,6 +46,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
+  const api = new Api({
+    url: 'https://mesto.nomoreparties.co/v1/cohort-63',
+    headers: {
+      authorization: '6e9922b1-82bb-44b1-8c4a-e1a93da7bd0f',
+      'Content-Type': 'application/json',
+    },
+  });
 
   function getLoginUserDataFromToken(info) {
     getContent(info.token)
