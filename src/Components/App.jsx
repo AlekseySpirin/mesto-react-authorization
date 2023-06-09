@@ -7,7 +7,6 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import { authorize, getContent, register } from '../utils/auth';
-import '../index.css';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
