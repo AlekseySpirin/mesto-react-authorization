@@ -46,9 +46,8 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
   const api = new Api({
-    url: 'https://mesto.nomoreparties.co/v1/cohort-63',
+    url: 'http://localhost:3010',
     headers: {
-      authorization: '6e9922b1-82bb-44b1-8c4a-e1a93da7bd0f',
       'Content-Type': 'application/json',
     },
   });
