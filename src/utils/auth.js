@@ -10,9 +10,7 @@ function checkResponse(res) {
 function request(endpoint, options) {
   // принимает два аргумента: урл и объект опций, как и `fetch`
 
-  return fetch(`https://auth.nomoreparties.co${endpoint}`, options).then(
-    checkResponse,
-  );
+  return fetch(`http://localhost:3000${endpoint}`, options).then(checkResponse);
 }
 
 export const register = (email, password) =>
