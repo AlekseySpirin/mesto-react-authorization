@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 function checkResponse(res) {
   if (res.ok) {
     return res.json();
@@ -9,40 +11,43 @@ function checkResponse(res) {
 
 function request(endpoint, options) {
   // принимает два аргумента: урл и объект опций, как и `fetch`
+  const token = Cookies.get('jwt');
 
-  return fetch(`http://localhost:3000${endpoint}`, options).then(checkResponse);
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    document.cookie = `token=${token}; SameSite=Strict`;
+  }
+
+  return fetch(`http://localhost:3000${endpoint}`, {
+    ...options,
+    headers,
+    credentials: 'include',
+  }).then(checkResponse);
 }
 
 export const register = (email, password) =>
   request('/signup', {
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       email,
       password,
     }),
   });
+
 export const authorize = (email, password) =>
   request('/signin', {
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
       email,
       password,
     }),
   });
-export const getContent = (token) =>
+
+export const getContent = () =>
   request('/users/me', {
     method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
   });

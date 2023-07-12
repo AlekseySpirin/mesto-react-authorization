@@ -46,14 +46,14 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
   const api = new Api({
-    url: 'http://localhost:3010',
+    url: 'http://localhost:3000',
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
-  function getLoginUserDataFromToken(info) {
-    getContent(info.token)
+  function getLoginUserDataFromToken() {
+    getContent()
       .then((data) => {
         if (data) {
           setIsLoggedIn(true);
@@ -70,7 +70,6 @@ function App() {
 
   const handleLogin = ({ email, password }, resetForm) =>
     authorize(email, password).then((data) => {
-      localStorage.setItem('jwt', data.token);
       setIsLoggedIn(true);
       navigate('/cards');
       getLoginUserDataFromToken(data);
@@ -107,8 +106,7 @@ function App() {
     });
 
   const checkToken = () => {
-    const jwt = localStorage.getItem('jwt');
-    getContent(jwt)
+    getContent()
       .then((data) => {
         if (data) {
           setIsLoggedIn(true);
@@ -196,12 +194,12 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    console.log('Сработало на фронте');
 
     function makeRequest() {
-      return api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c)),
-        );
+      // eslint-disable-next-line no-shadow
+      return api.changeLikeCardStatus(card._id, !isLiked).then((card) => {
+        setCards((state) => state.map((c) => (c._id === card._id ? card : c)));
       });
     }
 
@@ -325,4 +323,5 @@ function App() {
     </CurrentUserContext.Provider>
   );
 }
+
 export default App;

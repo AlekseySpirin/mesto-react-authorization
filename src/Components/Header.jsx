@@ -3,12 +3,17 @@ import logo320 from '../images/svg/logo320.svg';
 import logo from '../images/svg/logo.svg';
 import './styles/Header.css';
 
-function Header({ isLoggedIn, userData, setIsLoggedIn }) {
+function Header({
+  isLoggedIn,
+  // userData,
+  setIsLoggedIn,
+}) {
   const navigate = useNavigate();
   const location = useLocation();
 
   function signOut() {
-    localStorage.removeItem('jwt');
+    document.cookie = 'jwt=; path=/;';
+    console.log(document.cookie);
     setIsLoggedIn(false);
     navigate('/login');
   }
@@ -22,7 +27,11 @@ function Header({ isLoggedIn, userData, setIsLoggedIn }) {
       <nav className='menu'>
         {isLoggedIn ? (
           <NavLink className={'user__link'} to='#'>
-            <p className={'user__email'}>{userData?.data.email}</p>
+            <p className={'user__email'}>
+              {' '}
+              3151020
+              {/* {userData?.data.email} */}
+            </p>
           </NavLink>
         ) : (
           ''
@@ -30,10 +39,13 @@ function Header({ isLoggedIn, userData, setIsLoggedIn }) {
         {location.pathname === '/register' && (
           <NavLink to='/login' className={'menu__item'}>
             {isLoggedIn ? (
-              // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions
-              <p onClick={signOut} className={'menu__exit'}>
+              <button
+                type={'button'}
+                onClick={signOut}
+                className={'menu__exit'}
+              >
                 Выйти
-              </p>
+              </button>
             ) : (
               'Войти'
             )}
@@ -54,29 +66,6 @@ function Header({ isLoggedIn, userData, setIsLoggedIn }) {
         ) : (
           ''
         )}
-        {/* [div] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment> */}
-        {/* <Routes> */}
-        {/*	<Route exact path="/"> */}
-        {/*		*/}
-        {/*		<div className="header__wrapper"> */}
-        {/*			<p className="header__user">{userData.data.email}</p> */}
-        {/*			<button className="header__logout" onClick={signOut}> */}
-        {/*				Выйти */}
-        {/*			</button> */}
-        {/*		</div> */}
-        {/*		*/}
-        {/*	</Route> */}
-        {/*	<Route path="/signup"> */}
-        {/*		<Link className="header__auth-link" to="signin"> */}
-        {/*			Войти */}
-        {/*		</Link> */}
-        {/*	</Route> */}
-        {/*	<Route path="/signin"> */}
-        {/*		<Link className="header__auth-link" to="signup"> */}
-        {/*			Регистрация */}
-        {/*		</Link> */}
-        {/*	</Route> */}
-        {/* </Routes> */}
       </nav>
     </header>
   );
