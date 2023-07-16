@@ -29,7 +29,6 @@ export const register = (email, password) =>
       password,
     }),
   });
-
 export const authorize = (email, password) =>
   request('/signin', {
     method: 'POST',
@@ -38,7 +37,6 @@ export const authorize = (email, password) =>
       password,
     }),
   });
-
 export const getContent = () =>
   request('/users/me', {
     method: 'GET',
