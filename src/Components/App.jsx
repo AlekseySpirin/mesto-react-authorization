@@ -46,7 +46,7 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
   const api = new Api({
-    url: 'http://api.mesto-spirin.nomoredomains.work',
+    url: 'http://localhost:4000',
     headers: {
       'Content-Type': 'application/json',
     },
