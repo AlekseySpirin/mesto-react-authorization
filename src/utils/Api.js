@@ -21,6 +21,7 @@ export default class Api {
     return this._request('/cards', {
       method: 'GET',
       headers: this.headers,
+      credentials: 'include',
     });
   }
 
@@ -28,6 +29,7 @@ export default class Api {
     return this._request('/users/me', {
       method: 'GET',
       headers: this.headers,
+      credentials: 'include',
     });
   }
 
@@ -35,6 +37,7 @@ export default class Api {
     return this._request('/users/me', {
       method: 'PATCH',
       headers: this.headers,
+      credentials: 'include',
       body: JSON.stringify({
         name,
         about,
@@ -46,6 +49,7 @@ export default class Api {
     return this._request('/users/me/avatar', {
       method: 'PATCH',
       headers: this.headers,
+      credentials: 'include',
       body: JSON.stringify({ avatar }),
     });
   }
@@ -53,6 +57,7 @@ export default class Api {
   addCardServer({ name, link }) {
     return this._request('/cards', {
       method: 'POST',
+      credentials: 'include',
       headers: this.headers,
       body: JSON.stringify({
         name,
@@ -65,6 +70,7 @@ export default class Api {
     return this._request(`/cards/${cardId}`, {
       method: 'DELETE',
       headers: this.headers,
+      credentials: 'include',
     });
   }
 
@@ -72,6 +78,7 @@ export default class Api {
     return this._request(`/cards/${cardId}/likes`, {
       method: isLiked ? 'PUT' : 'DELETE',
       headers: this.headers,
+      credentials: 'include',
     });
   }
 }
