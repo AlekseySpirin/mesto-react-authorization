@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './styles/Login.css';
 import useFormAndValidation from '../utils/hooks/useFormAndValidation';
 
-function Login({ handleLogin }) {
+function Login({ handleLogin, showResults }) {
   const { values, handleChange, errors, resetForm } = useFormAndValidation({
     email: '',
     password: '',
@@ -19,7 +19,11 @@ function Login({ handleLogin }) {
         password: values.password,
       },
       resetForm,
-    ).catch((err) => setErrorMessage(err));
+    ).catch((err) => {
+      console.log(err);
+      setErrorMessage('Неправильный email или пароль');
+      showResults();
+    });
   };
 
   return (

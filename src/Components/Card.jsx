@@ -5,13 +5,8 @@ import './styles/Card.css';
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = useContext(CurrentUserContext);
   const { _id } = currentUser;
-  console.log(card);
-  console.log(card.owner);
-
-  console.log(card.likes);
-
-  const isOwn = (card.owner._id || card.owner) === _id;
-  const isLiked = card.likes.some((i) => i._id === _id);
+  const isOwn = (card.owner?._id || card.owner) === _id;
+  const isLiked = card.likes?.some((i) => i._id === _id);
   const cardLikeButtonClassName = `card__like ${
     isLiked && 'card__like_active'
   }`;
@@ -21,7 +16,6 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   }
 
   function handleLikeClick() {
-    console.log('like1');
     onCardLike(card);
   }
 
