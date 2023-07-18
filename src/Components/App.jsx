@@ -6,7 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { authorize, getContent, register } from '../utils/auth';
+import { authorize, getContent, logout, register } from '../utils/auth';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -45,8 +45,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
+  const { REACT_APP_API_URL = 'http://localhost:4000' } = process.env;
   const api = new Api({
-    url: 'http://localhost:4000',
+    url: REACT_APP_API_URL,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -67,6 +68,9 @@ function App() {
       });
   }
 
+  const handleLogout = () => {
+    logout().then((res) => console.log(res));
+  };
   const handleLogin = ({ email, password }, resetForm) =>
     authorize(email, password).then((data) => {
       setIsLoggedIn(true);
@@ -76,13 +80,16 @@ function App() {
     });
 
   useEffect(() => {
-    Promise.all([api.getServerUserInfo(), api.getInitialCards()])
-      .then(([info, card]) => {
-        setCurrentUser(info);
-        setCards(card);
-      })
-      .catch(console.error);
-  }, []);
+    if (isLoggedIn) {
+      Promise.all([api.getServerUserInfo(), api.getInitialCards()])
+        .then(([info, card]) => {
+          setCurrentUser(info);
+          setCards(card);
+          navigate('/cards');
+        })
+        .catch(console.error);
+    }
+  }, [isLoggedIn]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -193,12 +200,11 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    console.log('Сработало на фронте');
-
     function makeRequest() {
-      // eslint-disable-next-line no-shadow
-      return api.changeLikeCardStatus(card._id, !isLiked).then((card) => {
-        setCards((state) => state.map((c) => (c._id === card._id ? card : c)));
+      return api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c)),
+        );
       });
     }
 
@@ -244,6 +250,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header
+        handleLogout={handleLogout}
         setIsLoggedIn={setIsLoggedIn}
         isLoggedIn={isLoggedIn}
         userData={userData}
@@ -274,7 +281,12 @@ function App() {
             />
           }
         />
-        <Route path='/login' element={<Login handleLogin={handleLogin} />} />
+        <Route
+          path='/login'
+          element={
+            <Login handleLogin={handleLogin} showResults={showResults} />
+          }
+        />
         <Route
           path='/cards'
           element={

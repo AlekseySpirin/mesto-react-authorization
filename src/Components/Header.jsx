@@ -1,22 +1,14 @@
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import logo320 from '../images/svg/logo320.svg';
 import logo from '../images/svg/logo.svg';
 import './styles/Header.css';
 
-function Header({
-  isLoggedIn,
-  // userData,
-  setIsLoggedIn,
-}) {
-  const navigate = useNavigate();
+function Header({ isLoggedIn, userData, setIsLoggedIn, handleLogout }) {
   const location = useLocation();
 
   function signOut() {
-    console.log(document.cookie);
-    document.cookie = 'jwt=; path=/;';
-    console.log(document.cookie);
     setIsLoggedIn(false);
-    navigate('/login');
+    handleLogout();
   }
 
   return (
@@ -28,11 +20,7 @@ function Header({
       <nav className='menu'>
         {isLoggedIn ? (
           <NavLink className={'user__link'} to='#'>
-            <p className={'user__email'}>
-              {' '}
-              3151020
-              {/* {userData?.data.email} */}
-            </p>
+            <p className={'user__email'}> {userData?.email}</p>
           </NavLink>
         ) : (
           ''
