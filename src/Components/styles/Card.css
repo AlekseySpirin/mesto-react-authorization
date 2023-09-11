@@ -74,19 +74,6 @@
     transition: 0.3s ease;
 }
 
-.card__like {
-    background: url(../../images/svg/like.svg);
-    width: 22px;
-    height: 19px;
-    bottom: 30px;
-    right: 20px;
-    border: 0;
-    cursor: pointer;
-    z-index: 2;
-    align-self: center;
-    justify-self: center;
-}
-
 .card__like:hover {
     opacity: 0.5;
     transition: 0.3s ease;

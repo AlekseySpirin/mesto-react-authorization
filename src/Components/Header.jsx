@@ -3,13 +3,8 @@ import logo320 from '../images/svg/logo320.svg';
 import logo from '../images/svg/logo.svg';
 import './styles/Header.css';
 
-function Header({ isLoggedIn, userData, setIsLoggedIn, handleLogout }) {
+function Header({ isLoggedIn, userData, signOut }) {
   const location = useLocation();
-
-  function signOut() {
-    setIsLoggedIn(false);
-    handleLogout();
-  }
 
   return (
     <header className='header'>
@@ -31,7 +26,7 @@ function Header({ isLoggedIn, userData, setIsLoggedIn, handleLogout }) {
               <button
                 type={'button'}
                 onClick={signOut}
-                className={'menu__exit'}
+                className={'burger-menu__exit'}
               >
                 Выйти
               </button>
@@ -48,7 +43,7 @@ function Header({ isLoggedIn, userData, setIsLoggedIn, handleLogout }) {
         {isLoggedIn ? (
           <NavLink to='/login' className={'menu__item'}>
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
-            <p onClick={signOut} className={'menu__exit'}>
+            <p onClick={signOut} className={'burger-menu__exit'}>
               Выйти
             </p>
           </NavLink>

@@ -12,7 +12,7 @@ function request(endpoint, options) {
     'Content-Type': 'application/json',
   };
 
-  return fetch(`http://localhost:4000${endpoint}`, {
+  return fetch(`https://api.mesto-spirin.nomoredomains.work${endpoint}`, {
     ...options,
     headers,
     credentials: 'include',
